@@ -1,0 +1,4 @@
+-keep class com.bridge.accessibility.** { *; }
+-keep class fi.iki.elonen.** { *; }
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable

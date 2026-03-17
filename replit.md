@@ -48,6 +48,20 @@ Every package extends `tsconfig.base.json` which sets `composite: true`. The roo
 - `pnpm run build` — runs `typecheck` first, then recursively runs `build` in all packages that define it
 - `pnpm run typecheck` — runs `tsc --build --emitDeclarationOnly` using project references
 
+## Android Artifact
+
+### `artifacts/android-bridge` — AI Bridge (Android/Kotlin)
+
+Aplicación Android nativa que actúa como puente de accesibilidad para agentes de IA externos (Groq/LLM) corriendo en Termux.
+
+- **IAccessibilityService.kt** — servicio de accesibilidad que captura el árbol de nodos y ejecuta gestos/acciones globales
+- **BridgeHttpServer.kt** — servidor HTTP NanoHTTPD en puerto 8080 con endpoints `/screen`, `/action`, `/health`
+- **MainActivity.kt** — UI de estado que muestra si el servicio está activo
+- **accessibility_service_config.xml** — flags: `flagRetrieveInteractiveWindows`, `flagReportViewIds`, `canPerformGestures`
+- Requiere Android 8.0+ (API 26), compileSdk 34
+- Dependency: NanoHTTPD 2.3.1 (servidor HTTP embebido)
+- Compilar: `./gradlew assembleDebug` desde `artifacts/android-bridge/`
+
 ## Packages
 
 ### `artifacts/api-server` (`@workspace/api-server`)

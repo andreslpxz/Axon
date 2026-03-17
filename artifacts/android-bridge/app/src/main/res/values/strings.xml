@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AI Bridge</string>
+    <string name="accessibility_service_label">AI Bridge Accessibility Service</string>
+    <string name="accessibility_service_description">Permite a un agente de IA externo (Termux/Groq) leer la pantalla y controlar el dispositivo mediante un servidor HTTP interno en el puerto 8080. No recopila datos personales.</string>
+</resources>
