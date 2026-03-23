@@ -100,8 +100,8 @@ class IAccessibilityService : AccessibilityService() {
                 if (resId.isNotEmpty()) obj.put("id", resId)
                 obj.put("cls", simplifyClassName(className))
                 obj.put("rect", JSONObject().apply {
-                    put("x", cx)
-                    put("y", cy)
+                    put("x", bounds.left)
+                    put("y", bounds.top)
                     put("w", bounds.width())
                     put("h", bounds.height())
                 })

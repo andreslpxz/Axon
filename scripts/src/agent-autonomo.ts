@@ -194,7 +194,7 @@ class ContextFormatter {
       if (node.text) output += `    Text: "${node.text}"\n`;
       if (node.desc) output += `    Description: "${node.desc}"\n`;
       if (node.id) output += `    ID: ${node.id}\n`;
-      output += `    Position: (${node.rect.x}, ${node.rect.y}) Size: ${node.rect.w}x${node.rect.h}\n`;
+      output += `    Position (Top-Left): (${node.rect.x}, ${node.rect.y}) Size: ${node.rect.w}x${node.rect.h}\n`;
       const attrs = [];
       if (node.clickable) attrs.push("clickable");
       if (node.scrollable) attrs.push("scrollable");
