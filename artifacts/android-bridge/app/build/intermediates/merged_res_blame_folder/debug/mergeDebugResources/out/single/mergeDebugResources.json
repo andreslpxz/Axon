@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "com.bridge.accessibility.app-debug-23:/layout_activity_main.xml.flat",
+        "source": "com.bridge.accessibility.app-main-25:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.bridge.accessibility.app-debug-23:/drawable_ic_launcher.xml.flat",
+        "source": "com.bridge.accessibility.app-main-25:/drawable/ic_launcher.xml"
+    },
+    {
+        "merged": "com.bridge.accessibility.app-debug-23:/xml_accessibility_service_config.xml.flat",
+        "source": "com.bridge.accessibility.app-main-25:/xml/accessibility_service_config.xml"
+    }
+]
