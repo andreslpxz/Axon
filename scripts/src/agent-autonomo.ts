@@ -40,7 +40,7 @@ interface ScreenState {
   timestamp: number;
 }
 
-type ActionType = "CLICK" | "TYPE" | "SWIPE" | "WAIT" | "FINISH";
+type ActionType = "CLICK" | "TYPE" | "SWIPE" | "WAIT" | "FINISH" | "HOME" | "BACK" | "RECENTS";
 
 interface Action {
   type: ActionType;
@@ -160,6 +160,13 @@ class AccessibilityBridgeClient {
       case "FINISH":
         // FINISH es terminal
         return { action: "finish", message: action.params?.message ?? "" };
+      case "HOME":
+      case "BACK":
+      case "RECENTS":
+        return {
+          action: "global",
+          type: action.type.toLowerCase(),
+        };
       default:
         throw new Error(`Unknown action type: ${action.type}`);
     }
@@ -233,15 +240,17 @@ class ActionParser {
       /Action:\s*SWIPE\(\s*"(up|down|left|right)"\s*\)/i,
       /Action:\s*WAIT\(\s*(\d+)\s*\)/i,
       /Action:\s*FINISH\(\s*"([^"]*)"\s*\)/i,
+      /Action:\s*(HOME|BACK|RECENTS)\s*\(\s*\)/i,
       // Fallback: search without "Action:" prefix
       /CLICK\(\s*(\d+)\s*,\s*(\d+)\s*\)/i,
       /TYPE\(\s*"([^"]*)"\s*\)/i,
       /SWIPE\(\s*"(up|down|left|right)"\s*\)/i,
       /WAIT\(\s*(\d+)\s*\)/i,
       /FINISH\(\s*"([^"]*)"\s*\)/i,
+      /(HOME|BACK|RECENTS)\s*\(\s*\)/i,
     ];
 
-    const clickMatch = patterns[0].exec(contentWithoutThink) || patterns[5].exec(contentWithoutThink);
+    const clickMatch = patterns[0].exec(contentWithoutThink) || patterns[6].exec(contentWithoutThink);
     if (clickMatch) {
       return {
         type: "CLICK",
@@ -252,7 +261,7 @@ class ActionParser {
       };
     }
 
-    const typeMatch = patterns[1].exec(contentWithoutThink) || patterns[6].exec(contentWithoutThink);
+    const typeMatch = patterns[1].exec(contentWithoutThink) || patterns[7].exec(contentWithoutThink);
     if (typeMatch) {
       return {
         type: "TYPE",
@@ -260,7 +269,7 @@ class ActionParser {
       };
     }
 
-    const swipeMatch = patterns[2].exec(contentWithoutThink) || patterns[7].exec(contentWithoutThink);
+    const swipeMatch = patterns[2].exec(contentWithoutThink) || patterns[8].exec(contentWithoutThink);
     if (swipeMatch) {
       return {
         type: "SWIPE",
@@ -268,7 +277,7 @@ class ActionParser {
       };
     }
 
-    const waitMatch = patterns[3].exec(contentWithoutThink) || patterns[8].exec(contentWithoutThink);
+    const waitMatch = patterns[3].exec(contentWithoutThink) || patterns[9].exec(contentWithoutThink);
     if (waitMatch) {
       return {
         type: "WAIT",
@@ -276,11 +285,18 @@ class ActionParser {
       };
     }
 
-    const finishMatch = patterns[4].exec(contentWithoutThink) || patterns[9].exec(contentWithoutThink);
+    const finishMatch = patterns[4].exec(contentWithoutThink) || patterns[10].exec(contentWithoutThink);
     if (finishMatch) {
       return {
         type: "FINISH",
         params: { message: finishMatch[1] },
+      };
+    }
+
+    const systemMatch = patterns[5].exec(contentWithoutThink) || patterns[11].exec(contentWithoutThink);
+    if (systemMatch) {
+      return {
+        type: systemMatch[1].toUpperCase() as "HOME" | "BACK" | "RECENTS",
       };
     }
 
@@ -454,16 +470,20 @@ You have access to the following actions:
 - SWIPE("direction"): Perform a swipe gesture. Direction can be: up, down, left, right
 - WAIT(ms): Wait for specified milliseconds
 - FINISH("message"): Complete the task with a completion message
+- HOME(): Press the system home button
+- BACK(): Press the system back button
+- RECENTS(): Open the system recent apps screen
 
 IMPORTANT INSTRUCTIONS:
 1. Always reason step-by-step before executing an action (Thought -> Action)
-2. Analyze the current screen state carefully before deciding your next move
-3. Look for interactive elements (buttons, inputs, clickable text) with their positions
-4. If you need to scroll to find an element, use SWIPE actions
-5. After performing an action, wait briefly for the UI to update
-6. If the same action fails twice in a row, try a different approach
-7. Avoid infinite loops by varying your actions
-8. When the task is complete, use FINISH("message describing what was accomplished")
+2. To go to the home screen or go back, use the system actions HOME() and BACK() instead of clicking on UI buttons labeled "HOME" or "BACK".
+3. Analyze the current screen state carefully before deciding your next move
+4. Look for interactive elements (buttons, inputs, clickable text) with their positions
+5. If you need to scroll to find an element, use SWIPE actions
+6. After performing an action, wait briefly for the UI to update
+7. If the same action fails twice in a row, try a different approach
+8. Avoid infinite loops by varying your actions
+9. When the task is complete, use FINISH("message describing what was accomplished")
 
 Format your response as:
 <think>
