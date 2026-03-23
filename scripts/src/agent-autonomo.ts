@@ -223,6 +223,9 @@ class ContextFormatter {
 
 class ActionParser {
   static parse(llmOutput: string): Action | null {
+    // Remove <think> blocks before parsing action
+    const contentWithoutThink = llmOutput.replace(/<think>[\s\S]*?<\/think>/gi, "");
+
     // Busca patrones: ACTION: TYPE(params)
     const patterns = [
       /Action:\s*CLICK\(\s*(\d+)\s*,\s*(\d+)\s*\)/i,
@@ -230,9 +233,15 @@ class ActionParser {
       /Action:\s*SWIPE\(\s*"(up|down|left|right)"\s*\)/i,
       /Action:\s*WAIT\(\s*(\d+)\s*\)/i,
       /Action:\s*FINISH\(\s*"([^"]*)"\s*\)/i,
+      // Fallback: search without "Action:" prefix
+      /CLICK\(\s*(\d+)\s*,\s*(\d+)\s*\)/i,
+      /TYPE\(\s*"([^"]*)"\s*\)/i,
+      /SWIPE\(\s*"(up|down|left|right)"\s*\)/i,
+      /WAIT\(\s*(\d+)\s*\)/i,
+      /FINISH\(\s*"([^"]*)"\s*\)/i,
     ];
 
-    const clickMatch = patterns[0].exec(llmOutput);
+    const clickMatch = patterns[0].exec(contentWithoutThink) || patterns[5].exec(contentWithoutThink);
     if (clickMatch) {
       return {
         type: "CLICK",
@@ -243,7 +252,7 @@ class ActionParser {
       };
     }
 
-    const typeMatch = patterns[1].exec(llmOutput);
+    const typeMatch = patterns[1].exec(contentWithoutThink) || patterns[6].exec(contentWithoutThink);
     if (typeMatch) {
       return {
         type: "TYPE",
@@ -251,7 +260,7 @@ class ActionParser {
       };
     }
 
-    const swipeMatch = patterns[2].exec(llmOutput);
+    const swipeMatch = patterns[2].exec(contentWithoutThink) || patterns[7].exec(contentWithoutThink);
     if (swipeMatch) {
       return {
         type: "SWIPE",
@@ -259,7 +268,7 @@ class ActionParser {
       };
     }
 
-    const waitMatch = patterns[3].exec(llmOutput);
+    const waitMatch = patterns[3].exec(contentWithoutThink) || patterns[8].exec(contentWithoutThink);
     if (waitMatch) {
       return {
         type: "WAIT",
@@ -267,7 +276,7 @@ class ActionParser {
       };
     }
 
-    const finishMatch = patterns[4].exec(llmOutput);
+    const finishMatch = patterns[4].exec(contentWithoutThink) || patterns[9].exec(contentWithoutThink);
     if (finishMatch) {
       return {
         type: "FINISH",
@@ -457,10 +466,12 @@ IMPORTANT INSTRUCTIONS:
 8. When the task is complete, use FINISH("message describing what was accomplished")
 
 Format your response as:
-Thought: <your reasoning about current state and next step>
-Action: <ACTION_TYPE(params)>
+<think>
+your internal reasoning about current state and next step
+</think>
+Action: ACTION_TYPE(params)
 
-Only output Thought and Action lines. Be concise.`;
+You MUST always provide an Action line outside of any tags. Be concise and precise.`;
   }
 
   private buildUserPrompt(observation: string): string {
@@ -498,7 +509,7 @@ Only output Thought and Action lines. Be concise.`;
         },
       ],
       temperature: 0.3, // Lower temp for more deterministic behavior
-      max_tokens: 200,
+      max_tokens: 1024,
     });
 
     const content = response.choices[0]?.message?.content;
@@ -510,8 +521,15 @@ Only output Thought and Action lines. Be concise.`;
   }
 
   private extractThought(llmOutput: string): string {
-    const match = /Thought:\s*(.+?)(?:\n|$)/i.exec(llmOutput);
-    return match ? match[1].trim() : "Could not extract thought";
+    // Try to extract from <think> tags first
+    const thinkMatch = /<think>([\s\S]*?)<\/think>/i.exec(llmOutput);
+    if (thinkMatch) return thinkMatch[1].trim();
+
+    // Fallback to Thought: prefix
+    const thoughtMatch = /Thought:\s*(.+?)(?:\n|$)/i.exec(llmOutput);
+    if (thoughtMatch) return thoughtMatch[1].trim();
+
+    return "Could not extract thought";
   }
 
   private printSummary(): void {
