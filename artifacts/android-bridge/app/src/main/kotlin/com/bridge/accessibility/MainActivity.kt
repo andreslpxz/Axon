@@ -1,97 +1,61 @@
 package com.bridge.accessibility
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
-import android.text.TextUtils
-import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bridge.accessibility.databinding.ActivityMainBinding
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val statusText = findViewById<TextView>(R.id.statusText)
-        val enableBtn = findViewById<Button>(R.id.enableButton)
+        setSupportActionBar(binding.toolbar)
 
-        enableBtn.setOnClickListener {
-            val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-            startActivity(intent)
-        }
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
 
-        updateStatus(statusText)
+        // Connect Bottom Navigation with NavController
+        binding.bottomNav.setupWithNavController(navController)
+
+        // Configuration for drawer and toolbar
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.nav_chat, R.id.nav_settings, R.id.nav_status),
+            binding.drawer_layout
+        )
+        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+
+        setupHistoryDrawer()
     }
 
-    override fun onResume() {
-        super.onResume()
-        val statusText = findViewById<TextView>(R.id.statusText)
-        updateStatus(statusText)
-    }
+    private fun setupHistoryDrawer() {
+        val historyRecycler = binding.navView.findViewById<RecyclerView>(R.id.history_recycler_view)
+        historyRecycler.layoutManager = LinearLayoutManager(this)
 
-    private fun updateStatus(statusText: TextView) {
-        val serviceEnabled = isAccessibilityServiceEnabled()
-        val serverRunning = IAccessibilityService.instance != null
-
-        if (serviceEnabled && serverRunning) {
-            statusText.text = buildString {
-                appendLine("Estado: ACTIVO")
-                appendLine("")
-                appendLine("Servicio de accesibilidad: ON")
-                appendLine("Servidor HTTP: ON (puerto 8080)")
-                appendLine("")
-                appendLine("Endpoints disponibles:")
-                appendLine("  GET  http://localhost:8080/screen")
-                appendLine("  POST http://localhost:8080/action")
-                appendLine("  GET  http://localhost:8080/health")
-                appendLine("")
-                appendLine("Ejemplos de uso desde Termux:")
-                appendLine("  curl http://localhost:8080/screen")
-                appendLine("  curl -X POST http://localhost:8080/action \\")
-                appendLine("    -H 'Content-Type: application/json' \\")
-                appendLine("    -d '{\"action\":\"click\",\"x\":540,\"y\":960}'")
+        // Mock history for now, but wired to UI
+        val historyData = listOf("Chat de hoy", "Calculadora ayer", "Ajustes WiFi")
+        historyRecycler.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+                val view = LayoutInflater.from(parent.context).inflate(android.R.layout.simple_list_item_1, parent, false)
+                return object : RecyclerView.ViewHolder(view) {}
             }
-        } else if (serviceEnabled) {
-            statusText.text = buildString {
-                appendLine("Estado: INICIANDO...")
-                appendLine("")
-                appendLine("Servicio de accesibilidad: ON")
-                appendLine("Servidor HTTP: iniciando...")
+            override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+                (holder.itemView as TextView).text = historyData[position]
+                holder.itemView.setTextColor(0xFF00E5FF.toInt())
             }
-        } else {
-            statusText.text = buildString {
-                appendLine("Estado: INACTIVO")
-                appendLine("")
-                appendLine("El servicio de accesibilidad no está habilitado.")
-                appendLine("")
-                appendLine("Pulsa el botón para ir a Ajustes y activar:")
-                appendLine("'AI Bridge Accessibility Service'")
-            }
+            override fun getItemCount() = historyData.size
         }
-    }
-
-    private fun isAccessibilityServiceEnabled(): Boolean {
-        val accessibilityEnabled = try {
-            Settings.Secure.getInt(contentResolver, Settings.Secure.ACCESSIBILITY_ENABLED)
-        } catch (e: Settings.SettingNotFoundException) {
-            return false
-        }
-        if (accessibilityEnabled != 1) return false
-
-        val settingValue = Settings.Secure.getString(
-            contentResolver,
-            Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
-        ) ?: return false
-
-        val componentName = "${packageName}/${IAccessibilityService::class.java.name}"
-        val splitter = TextUtils.SimpleStringSplitter(':')
-        splitter.setString(settingValue)
-        while (splitter.hasNext()) {
-            if (splitter.next().equals(componentName, ignoreCase = true)) return true
-        }
-        return false
     }
 }
