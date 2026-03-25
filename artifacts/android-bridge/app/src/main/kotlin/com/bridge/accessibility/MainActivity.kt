@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         // Configuration for drawer and toolbar
         val appBarConfiguration = AppBarConfiguration(
             setOf(R.id.nav_chat, R.id.nav_settings, R.id.nav_status),
-            binding.drawer_layout
+            binding.drawerLayout
         )
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
