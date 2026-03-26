@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "com.bridge.accessibility.app-mergeDebugResources-50:/layout/fragment_settings.xml",
+        "source": "com.bridge.accessibility.app-main-53:/layout/fragment_settings.xml"
+    },
+    {
+        "merged": "com.bridge.accessibility.app-mergeDebugResources-50:/layout/item_chat_message.xml",
+        "source": "com.bridge.accessibility.app-main-53:/layout/item_chat_message.xml"
+    },
+    {
+        "merged": "com.bridge.accessibility.app-mergeDebugResources-50:/layout/fragment_status.xml",
+        "source": "com.bridge.accessibility.app-main-53:/layout/fragment_status.xml"
+    },
+    {
+        "merged": "com.bridge.accessibility.app-mergeDebugResources-50:/layout/activity_main.xml",
+        "source": "com.bridge.accessibility.app-main-53:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.bridge.accessibility.app-mergeDebugResources-50:/layout/fragment_chat.xml",
+        "source": "com.bridge.accessibility.app-main-53:/layout/fragment_chat.xml"
+    }
+]

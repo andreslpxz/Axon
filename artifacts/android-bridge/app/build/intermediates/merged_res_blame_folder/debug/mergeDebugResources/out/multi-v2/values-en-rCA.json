@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.bridge.accessibility.app-mergeDebugResources-21:/values-en-rCA/values-en-rCA.xml",
+            "outputFile": "com.bridge.accessibility.app-mergeDebugResources-49:/values-en-rCA/values-en-rCA.xml",
             "map": [
                 {
                     "source": "/data/data/com.termux/files/home/.gradle/caches/9.4.1/transforms/a1a3b79d337db4d6d3875513af6731ca/transformed/core-1.13.1/res/values-en-rCA/values-en-rCA.xml",
