@@ -4,7 +4,24 @@
             "outputFile": "com.bridge.accessibility.app-mergeDebugResources-49:/values-cs/values-cs.xml",
             "map": [
                 {
-                    "source": "/data/data/com.termux/files/home/.gradle/caches/9.4.1/transforms/c5b84dc598cc3787a730b7a42b3e62fd/transformed/navigation-ui-2.7.7/res/values-cs/values-cs.xml",
+                    "source": "/home/zeus/.gradle/caches/9.4.1/transforms/a1a3b79d337db4d6d3875513af6731ca/transformed/core-1.13.1/res/values-cs/values-cs.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,153,255,356,455,560,667,786",
+                        "endColumns": "97,101,100,98,104,106,118,100",
+                        "endOffsets": "148,250,351,450,555,662,781,882"
+                    },
+                    "to": {
+                        "startLines": "40,41,42,43,44,45,46,120",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "3540,3638,3740,3841,3940,4045,4152,10170",
+                        "endColumns": "97,101,100,98,104,106,118,100",
+                        "endOffsets": "3633,3735,3836,3935,4040,4147,4266,10266"
+                    }
+                },
+                {
+                    "source": "/home/zeus/.gradle/caches/9.4.1/transforms/c5b84dc598cc3787a730b7a42b3e62fd/transformed/navigation-ui-2.7.7/res/values-cs/values-cs.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",
@@ -21,7 +38,7 @@
                     }
                 },
                 {
-                    "source": "/data/data/com.termux/files/home/.gradle/caches/9.4.1/transforms/e7c6a67abc76b5990fb466846a57bdba/transformed/material-1.12.0/res/values-cs/values-cs.xml",
+                    "source": "/home/zeus/.gradle/caches/9.4.1/transforms/e7c6a67abc76b5990fb466846a57bdba/transformed/material-1.12.0/res/values-cs/values-cs.xml",
                     "from": {
                         "startLines": "2,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -40,24 +57,7 @@
                     }
                 },
                 {
-                    "source": "/data/data/com.termux/files/home/.gradle/caches/9.4.1/transforms/a1a3b79d337db4d6d3875513af6731ca/transformed/core-1.13.1/res/values-cs/values-cs.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,153,255,356,455,560,667,786",
-                        "endColumns": "97,101,100,98,104,106,118,100",
-                        "endOffsets": "148,250,351,450,555,662,781,882"
-                    },
-                    "to": {
-                        "startLines": "40,41,42,43,44,45,46,120",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "3540,3638,3740,3841,3940,4045,4152,10170",
-                        "endColumns": "97,101,100,98,104,106,118,100",
-                        "endOffsets": "3633,3735,3836,3935,4040,4147,4266,10266"
-                    }
-                },
-                {
-                    "source": "/data/data/com.termux/files/home/.gradle/caches/9.4.1/transforms/240367ae0541da7f1469ab5fceb80013/transformed/appcompat-1.7.0/res/values-cs/values-cs.xml",
+                    "source": "/home/zeus/.gradle/caches/9.4.1/transforms/240367ae0541da7f1469ab5fceb80013/transformed/appcompat-1.7.0/res/values-cs/values-cs.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",

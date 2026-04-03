@@ -4,7 +4,7 @@
             "outputFile": "com.bridge.accessibility.app-mergeDebugResources-49:/values-h360dp-land-v13/values-h360dp-land-v13.xml",
             "map": [
                 {
-                    "source": "/data/data/com.termux/files/home/.gradle/caches/9.4.1/transforms/e7c6a67abc76b5990fb466846a57bdba/transformed/material-1.12.0/res/values-h360dp-land-v13/values-h360dp-land-v13.xml",
+                    "source": "/home/zeus/.gradle/caches/9.4.1/transforms/e7c6a67abc76b5990fb466846a57bdba/transformed/material-1.12.0/res/values-h360dp-land-v13/values-h360dp-land-v13.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10",
                         "startColumns": "4,4,4,4,4,4,4,4,4",
